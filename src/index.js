@@ -22,8 +22,8 @@ menuItems.insertAdjacentHTML('beforeend', markup);
 const themeSwitchToggle = document.querySelector('.theme-switch__toggle');
 
 themeSwitchToggle.addEventListener('change', onChangeSwitch);
-themeSwitchToggle.addEventListener('change', onLocalStorage);
-document.addEventListener('themeLoaded', onGetThemeLocalStorage); 
+themeSwitchToggle.addEventListener('change', setLocalStorage);
+// document.addEventListener('themeLoaded', onGetThemeLocalStorage); 
 
 function onChangeSwitch (evt) {
     if (themeSwitchToggle.checked){
@@ -45,18 +45,46 @@ function setLightTheme() {
 
 // Local Storage
 
-function onLocalStorage(evt) {
-    if (themeSwitchToggle.checked) {
-        localStorage.setItem('theme', Theme.DARK);
-    } else {
-        localStorage.setItem('theme', Theme.LIGHT);
-    }
-}
+// function onLocalStorage(evt) {
+//     if (themeSwitchToggle.checked) {
+//         localStorage.setItem('theme', Theme.DARK);
+//     } else {
+//         localStorage.setItem('theme', Theme.LIGHT);
+//     }
+// }
  
-function onGetThemeLocalStorage() {
-    const themeInLocalStrg = localStorage.getItem('theme');
-    if (themeInLocalStrg === Theme.DARK) {
-      body.classList.add(Theme.DARK);
-      themeSwitchToggle.checked = true;
-    }
-  } 
+// function onGetThemeLocalStorage() {
+//     const themeInLocalStrg = localStorage.getItem('theme');
+//     if (themeInLocalStrg === Theme.DARK) {
+//       body.classList.add(Theme.DARK);
+//       themeSwitchToggle.checked = true;
+//     }
+//   } 
+
+document.addEventListener('DOMContentLoaded', onSwitchToggleDrag);
+
+function onSwitchElClick() {
+  if (refs.switchEl.checked) {
+    setDarkTheme();
+  } else {
+    setLightTheme();
+  }
+}
+
+function setLocalStorage(event) {
+  if (themeSwitchToggle.checked) {
+    localStorage.setItem('theme', Theme.DARK);
+  } else {
+    localStorage.removeItem('theme');
+    localStorage.setItem('theme', Theme.LIGHT);
+  }
+}
+
+function onSwitchToggleDrag() {
+  const currentTheme = localStorage.getItem('theme');
+  if (currentTheme === Theme.DARK) {
+    body.classList.add(Theme.DARK);
+    themeSwitchToggle.checked = true;
+  }
+}
+
